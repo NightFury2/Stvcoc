@@ -3,10 +3,17 @@ import Helmet from 'react-helmet';
 import config from '../../config';
 
 import Login from '../../containers/Login/Login';
+import RightMenuComponent from '../../components/RightMenuComponent/RightMenuComponent';
+import MenuContent from '../../components/MenuContent/MenuContent';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import spacing from 'material-ui/styles/spacing';
+import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
+import NavogationClose from 'material-ui/svg-icons/navigation/close';
+import NavogationMenu from 'material-ui/svg-icons/navigation/menu';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {
@@ -19,8 +26,6 @@ import {fade} from 'material-ui/utils/colorManipulator';
 
 import {sizeUpdate} from '../../redux/modules/screenSize';
 import {isLoaded as isAuthLoaded, load as loadAuth, login, logout, setCloseLogin, setOpenLogin} from '../../redux/modules/auth';
-import {isLoaded as isPartnersLoaded, load as loadPartners} from '../../redux/modules/partners';
-import {isLoaded as isNewsLoaded, load as loadHews} from '../../redux/modules/news';
 import {connect} from 'react-redux';
 import {asyncConnect} from 'redux-async-connect';
 import {push} from 'react-router-redux';
@@ -51,12 +56,6 @@ injectTapEventPlugin();
 @asyncConnect([{
   promise: ({store: {dispatch, getState}}) => {
     const promises = [];
-    if (!isPartnersLoaded(getState())) {
-      promises.push(dispatch(loadPartners()));
-    }
-    if (!isNewsLoaded(getState())) {
-      promises.push(dispatch(loadHews()));
-    }
     if (!isAuthLoaded(getState())) {
       promises.push(dispatch(loadAuth()));
     }
@@ -85,10 +84,15 @@ export default class App extends Component {
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
-    openLogin: React.PropTypes.bool,
+    openLogin: React.PropTypes.bool.isRequired,
     setCloseLogin: React.PropTypes.func.isRequired,
+    setOpenLogin: React.PropTypes.func.isRequired,
     // react-router-redux
     pushState: PropTypes.func.isRequired,
+  };
+  state = {
+    title: 'Главная',
+    openMenu: true
   };
   componentDidMount() {
     window.addEventListener('resize', this.setSize);
@@ -118,11 +122,49 @@ export default class App extends Component {
       this.props.sizeUpdate(scrHeight, scrWidth);
     }
   };
+  menuOpen = () => {
+    console.log('open');
+    this.setState({openMenu: true});
+  };
+  menuClose = () => {
+    console.log('close');
+    this.setState({openMenu: false});
+  };
   render() {
+    const {openMenu, title} = this.state;
     const styles = require('./App.scss');
+    const menuIcon = openMenu ? <IconButton><NavogationClose/></IconButton> : <IconButton onTouchTap={this.menuOpen}><NavogationMenu/></IconButton>;
     return (
        <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
           <div className={'row ' + styles.app}>
+            <AppBar
+               style={{position: 'fixed'}}
+               title={title}
+               iconElementLeft={menuIcon}
+               iconElementRight={
+                 <RightMenuComponent
+                    user={this.props.user}
+                    setOpenLogin={this.props.setOpenLogin}
+                    logout={this.props.logout}
+                    mobile={this.props.mobile}
+                 />
+               }
+            />
+            <Drawer
+              width={340}
+              docked={false}
+              open={openMenu}
+              onRequestChange={(open) => this.setState({openMenu: open})}
+            >
+              <MenuContent
+                 logout={this.props.logout}
+                 title={title}
+                 menuClose={this.menuClose}
+                 openLogin={this.props.openLogin}
+                 setOpenLogin={this.props.setOpenLogin}
+                 user={this.props.user}
+              />
+            </Drawer>
             <Login openLogin={this.props.openLogin} setCloseLogin={this.props.setCloseLogin} user={this.props.user} login={this.props.login}/>
             <Helmet {...config.app.head}/>
             {this.props.children}

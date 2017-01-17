@@ -3,7 +3,9 @@ const LOAD_NEWS_SUCCESS = 'LOAD_NEWS_SUCCESS';
 const LOAD_NEWS_FAIL = 'LOAD_NEWS_FAIL';
 
 const initialState = {
-  loaded: false
+  loadedNews: false,
+  loadingNews: false,
+  error: null
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -11,21 +13,21 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_NEWS:
       return {
         ...state,
-        loading: true
+        loadingNews: true
       };
     case LOAD_NEWS_SUCCESS:
       return {
         ...state,
-        loading: false,
-        loaded: true,
+        loadingNews: false,
+        loadedNews: true,
         data: action.result,
         error: null
       };
     case LOAD_NEWS_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        loadingNews: false,
+        loadedNews: false,
         data: null,
         error: action.error
       };
@@ -35,7 +37,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.news && globalState.news.loaded;
+  return globalState.news && globalState.news.loadedNews;
 }
 
 export function load() {

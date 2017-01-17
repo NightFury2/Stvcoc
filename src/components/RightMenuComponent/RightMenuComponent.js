@@ -8,16 +8,26 @@ import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 
 export default class RightMenuComponent extends Component {
   static propTypes = {
-    user: PropTypes.object
+    // auth
+    user: PropTypes.array,
+    logout: PropTypes.func.isRequired,
+    setOpenLogin: PropTypes.func.isRequired,
+    // screenSize
+    mobile: PropTypes.bool.isRequired
   };
   render() {
-    const {user} = this.props;
+    const {user, mobile, setOpenLogin, logout} = this.props;
     return (
        <Toolbar style={{background: 'transparent', marginTop: '-5px'}}>
          <ToolbarGroup>
            <Search/>
            {user && <Notification/>}
-           <LoginBox/>
+           <LoginBox
+              logout={logout}
+              mobile={mobile}
+              setOpenLogin={setOpenLogin}
+              user={user}
+           />
          </ToolbarGroup>
        </Toolbar>
     );

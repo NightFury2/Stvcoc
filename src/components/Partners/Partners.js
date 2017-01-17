@@ -7,20 +7,17 @@ import CircularProgress from 'material-ui/CircularProgress';
 export default class Partners extends Component {
   static propTypes = {
     partners: PropTypes.array,
-    loading: PropTypes.bool.isRequired,
-    loaded: PropTypes.bool.isRequired
+    loadingPartners: PropTypes.bool.isRequired,
+    errorPartners: PropTypes.object.isRequired
   };
    render() {
-     const {loading, loaded} = this.props;
-     const CircularProgressExampleSimple = () => (<CircularProgress size={80} thickness={5} />);
+     const {loadingPartners, errorPartners} = this.props;
      return (
        <div>
-         {loading &&
-            <list>
-              {CircularProgressExampleSimple}
-            </list>
+         {loadingPartners &&
+            <CircularProgress size={80} thickness={5} />
          }
-         {!loading && loaded &&
+         {!loadingPartners && !errorPartners &&
             <List>
               <Subheader>Наши партнеры</Subheader>
               {this.props.partners.map((partners) => (
@@ -33,7 +30,7 @@ export default class Partners extends Component {
               ))}
             </List>
          }
-         {!loaded &&
+         {errorPartners &&
             <List><Subheader>Не удалось подключиться к серверу</Subheader></List>
          }
        </div>

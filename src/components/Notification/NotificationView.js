@@ -6,7 +6,7 @@ import NotificationIcon from 'material-ui/svg-icons/social/notifications';
 import Subheader from 'material-ui/Subheader';
 import Avatar from 'material-ui/Avatar';
 
-export default class Notification extends Component {
+export default class NotificationView extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     anchorEl: PropTypes.object.isRequired,

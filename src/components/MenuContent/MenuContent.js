@@ -1,7 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 
-import {logout, setOpenLogin} from '../../redux/modules/auth';
-
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import AppBar from 'material-ui/AppBar';
@@ -18,17 +16,10 @@ import ReportProblemIcon from 'material-ui/svg-icons/action/report-problem';
 import HelpIcon from 'material-ui/svg-icons/action/help';
 import SettingIcon from 'material-ui/svg-icons/action/settings';
 
-import {connect} from 'react-redux';
-@connect(
-  state => ({
-    user: state.auth.user,
-    openLogin: state.auth.openLogin
-  }),
-  {setOpenLogin, logout})
 export default class MenuContent extends Component {
   static propTypes = {
     menuClose: PropTypes.func.isRequired,
-    user: React.PropTypes.object,
+    user: React.PropTypes.array,
     openLogin: React.PropTypes.bool.isRequired,
     setOpenLogin: React.PropTypes.func.isRequired,
     logout: React.PropTypes.func.isRequired

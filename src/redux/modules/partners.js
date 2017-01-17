@@ -3,7 +3,9 @@ const LOAD_PARTNERS_SUCCESS = 'LOAD_PARTNERS_SUCCESS';
 const LOAD_PARTNERS_FAIL = 'LOAD_PARTNERS_FAIL';
 
 const initialState = {
-  loaded: false
+  loadedPartners: false,
+  loadingPartners: false,
+  error: null
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -11,21 +13,21 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_PARTNERS:
       return {
         ...state,
-        loading: true
+        loadingPartners: true
       };
     case LOAD_PARTNERS_SUCCESS:
       return {
         ...state,
-        loading: false,
-        loaded: true,
+        loadingPartners: false,
+        loadedPartners: true,
         data: action.result,
         error: null
       };
     case LOAD_PARTNERS_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        loadingPartners: false,
+        loadedPartners: false,
         data: null,
         error: action.error
       };
@@ -35,7 +37,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.partners && globalState.partners.loaded;
+  return globalState.partners && globalState.partners.loadedNews;
 }
 
 export function load() {

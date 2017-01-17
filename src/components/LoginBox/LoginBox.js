@@ -1,33 +1,24 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 
-import {logout, setOpenLogin} from '../../redux/modules/auth';
 import LoginMenu from '../LoginMenu/LoginMenu';
 
 import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
 import IconUser from 'material-ui/svg-icons/action/account-circle';
-
-
 import {
    cyan500
 } from 'material-ui/styles/colors';
 
-import {connect} from 'react-redux';
-@connect(
-  state => ({
-    user: state.auth.user,
-    openLogin: state.auth.openLogin
-  }),
-  {setOpenLogin, logout})
 export default class LoginBox extends Component {
   static propTypes = {
-    user: React.PropTypes.object,
-    openLogin: React.PropTypes.bool.isRequired,
-    setOpenLogin: React.PropTypes.func.isRequired,
-    logout: React.PropTypes.func.isRequired
+    // auth
+    user: PropTypes.array,
+    logout: PropTypes.func.isRequired,
+    setOpenLogin: PropTypes.func.isRequired,
+    // screenSize
+    mobile: PropTypes.bool.isRequired
   };
   state = {
-    user: null,
     openLoginMenu: false,
     anchorEl: {}
   };
@@ -49,9 +40,11 @@ export default class LoginBox extends Component {
     });
   };
   render() {
+    const {user, logout, setOpenLogin, mobile} = this.props;
+    const labelFlatButton = mobile ? '' : 'Вход';
     const Login = (
        <FlatButton
-         label={'Вход'}
+         label={labelFlatButton}
          style={{color: 'white'}}
          icon={
            <Avatar
@@ -61,7 +54,7 @@ export default class LoginBox extends Component {
               size={30}
            />
          }
-         onTouchTap={this.handleOpenLogin}
+         onTouchTap={setOpenLogin}
        />
     );
     const LoginSuccess = (
@@ -80,14 +73,14 @@ export default class LoginBox extends Component {
         onTouchTap={this.handleOpenLoginMenu}
       />
     );
-    const content = this.props.user ? LoginSuccess : Login;
+    const content = user ? LoginSuccess : Login;
     return (
        <div>
          <LoginMenu
             open={this.state.openLoginMenu}
             anchorEl={this.state.anchorEl}
             closedLoginMenu={this.handleCloseLoginMenu}
-            logout={this.props.logout}
+            logout={logout}
          />
           {content}
        </div>

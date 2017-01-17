@@ -1,56 +1,29 @@
 import React, {Component, PropTypes} from 'react';
 
-import RightMenuComponent from '../RightMenuComponent/RightMenuComponent';
-import MenuContent from '../../components/MenuContent/MenuContent';
-
 import {blue500} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import IconButton from 'material-ui/IconButton';
-import NavogationClose from 'material-ui/svg-icons/navigation/close';
-import NavogationMenu from 'material-ui/svg-icons/navigation/menu';
 
 import {Parallax} from 'react-parallax';
 
 export default class TopHeaderBox extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    // Size
     headerLabelSize: PropTypes.string.isRequired,
     infoButtonSize: PropTypes.string.isRequired,
-    user: PropTypes.object
-  };
-  state = {
-    openMenu: false
-  };
-  menuOpen = () => {
-    this.setState({openMenu: true});
-  };
-  menuClose = () => {
-    this.setState({openMenu: false});
+    // auth
+    user: PropTypes.array,
+    login: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
+    setOpenLogin: PropTypes.func.isRequired,
+    // screenSize
+    mobile: PropTypes.bool.isRequired
   };
   render() {
-    const {title, headerLabelSize, infoButtonSize} = this.props;
-    const {openMenu} = this.state;
+    const {headerLabelSize, infoButtonSize} = this.props;
     const imageBG = require('./1.jpg');
-    const menuIcon = openMenu ? <IconButton><NavogationClose/></IconButton> : <IconButton onTouchTap={this.menuOpen}><NavogationMenu/></IconButton>;
     return (
       <div>
-        <AppBar
-           style={{position: 'fixed'}}
-           title={title}
-           iconElementLeft={menuIcon}
-           iconElementRight={<RightMenuComponent user={this.props.user}/>}
-        />
-        <Drawer
-          width={340}
-          docked={false}
-          open={this.state.openMenu}
-          onRequestChange={(open) => this.setState({openMenu: open})}
-        >
-          <MenuContent title={title} menuClose={this.menuClose}/>
-        </Drawer>
         <div className="row" >
           <div className="col s12 m10 offset-m1" style={{marginTop: '63px'}}>
             <Parallax bgImage={imageBG} strength={200}>
