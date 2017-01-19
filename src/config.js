@@ -12,24 +12,24 @@ const environment = {
 module.exports = Object.assign({
   host: process.env.HOST || 'localhost',
   port: process.env.PORT,
-  apiHost: process.env.APIHOST || '127.0.0.1',
+  apiHost: process.env.APIHOST,
   apiPort: process.env.APIPORT,
   app: {
-    title: 'Ставропольский колледж связи',
-    description: 'Официальный сайт Ставропольского колледжа связи',
+    title: 'React Redux Example',
+    description: 'All the modern best practices in one example.',
     head: {
-      titleTemplate: 'Ставропольский колледж связи: %s',
+      titleTemplate: 'React Redux Example: %s',
       meta: [
-        {name: 'description', content: 'Официальный сайт Ставропольского колледжа связи'},
+        {name: 'description', content: 'All the modern best practices in one example.'},
         {charset: 'utf-8'},
-        {property: 'og:site_name', content: 'Ставропольский колледж связи'},
+        {property: 'og:site_name', content: 'React Redux Example'},
         {property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.jpg'},
         {property: 'og:locale', content: 'en_US'},
-        {property: 'og:title', content: 'Ставропольский колледж связи'},
-        {property: 'og:description', content: 'Официальный сайт Ставропольского колледжа связи'},
+        {property: 'og:title', content: 'React Redux Example'},
+        {property: 'og:description', content: 'All the modern best practices in one example.'},
         {property: 'og:card', content: 'summary'},
-        {property: 'og:site', content: '@nightfuruy2'},
-        {property: 'og:creator', content: '@enightfury2'},
+        {property: 'og:site', content: '@erikras'},
+        {property: 'og:creator', content: '@erikras'},
         {property: 'og:image:width', content: '200'},
         {property: 'og:image:height', content: '200'}
       ]

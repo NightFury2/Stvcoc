@@ -12,7 +12,6 @@ import spacing from 'material-ui/styles/spacing';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
-import NavogationClose from 'material-ui/svg-icons/navigation/close';
 import NavogationMenu from 'material-ui/svg-icons/navigation/menu';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -92,7 +91,7 @@ export default class App extends Component {
   };
   state = {
     title: 'Главная',
-    openMenu: true
+    openMenu: false
   };
   componentDidMount() {
     window.addEventListener('resize', this.setSize);
@@ -133,14 +132,13 @@ export default class App extends Component {
   render() {
     const {openMenu, title} = this.state;
     const styles = require('./App.scss');
-    const menuIcon = openMenu ? <IconButton><NavogationClose/></IconButton> : <IconButton onTouchTap={this.menuOpen}><NavogationMenu/></IconButton>;
     return (
        <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
           <div className={'row ' + styles.app}>
             <AppBar
                style={{position: 'fixed'}}
                title={title}
-               iconElementLeft={menuIcon}
+               iconElementLeft={<IconButton onTouchTap={this.menuOpen}><NavogationMenu/></IconButton>}
                iconElementRight={
                  <RightMenuComponent
                     user={this.props.user}
@@ -154,7 +152,7 @@ export default class App extends Component {
               width={340}
               docked={false}
               open={openMenu}
-              onRequestChange={(open) => this.setState({openMenu: open})}
+              onRequestChange={this.menuClose}
             >
               <MenuContent
                  logout={this.props.logout}
@@ -165,7 +163,12 @@ export default class App extends Component {
                  user={this.props.user}
               />
             </Drawer>
-            <Login openLogin={this.props.openLogin} setCloseLogin={this.props.setCloseLogin} user={this.props.user} login={this.props.login}/>
+            <Login
+               openLogin={this.props.openLogin}
+               setCloseLogin={this.props.setCloseLogin}
+               user={this.props.user}
+               login={this.props.login}
+            />
             <Helmet {...config.app.head}/>
             {this.props.children}
           </div>

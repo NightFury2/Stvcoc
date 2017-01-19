@@ -26,14 +26,14 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
-        loaded: true,
+        loadedAuth: true,
         user: action.result
       };
     case LOAD_AUTH_FAIL:
       return {
         ...state,
         loading: false,
-        loaded: false,
+        loadedAuth: false,
         error: action.error
       };
     case LOGIN:
@@ -45,6 +45,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
+        loadedAuth: true,
         user: action.result,
         error: null
       };
@@ -52,6 +53,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
+        loadedAuth: false,
         user: null,
         loginError: action.error
       };
@@ -89,20 +91,20 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.auth && globalState.auth.loaded;
+  return globalState.auth && globalState.auth.loadedAuth;
 }
 
 export function load() {
   return {
     types: [LOAD_AUTH, LOAD_AUTH_SUCCESS, LOAD_AUTH_FAIL],
-    promise: (client) => client.get('/loadAuth/')
+    promise: (client) => client.get('/api/loadAuth/')
   };
 }
 
 export function login(username, password) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/api-token-auth/login/', {
+    promise: (client) => client.post('/api/login/', {
       data: {
         username: username,
         password: password
@@ -114,7 +116,7 @@ export function login(username, password) {
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.get('/api-token-auth/logout/')
+    promise: (client) => client.get('/api/logout/')
   };
 }
 

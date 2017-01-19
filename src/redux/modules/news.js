@@ -43,6 +43,6 @@ export function isLoaded(globalState) {
 export function load() {
   return {
     types: [LOAD_NEWS, LOAD_NEWS_SUCCESS, LOAD_NEWS_FAIL],
-    promise: (client) => client.get('/loadNews/')
+    promise: (client) => client.get('/api/loadNews/')
   };
 }

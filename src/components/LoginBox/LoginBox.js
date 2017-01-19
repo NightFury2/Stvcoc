@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import LoginMenu from '../LoginMenu/LoginMenu';
+import LoginBoxSuccess from '../LoginBoxSuccess/LoginBoxSuccess';
 
 import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
@@ -12,39 +12,21 @@ import {
 export default class LoginBox extends Component {
   static propTypes = {
     // auth
-    user: PropTypes.array,
+    user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     setOpenLogin: PropTypes.func.isRequired,
     // screenSize
     mobile: PropTypes.bool.isRequired
   };
-  state = {
-    openLoginMenu: false,
-    anchorEl: {}
-  };
   handleOpenLogin = () => {
     this.props.setOpenLogin();
   };
-  handleOpenLoginMenu = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
-
-    this.setState({
-      openLoginMenu: true,
-      anchorEl: event.currentTarget,
-    });
-  };
-  handleCloseLoginMenu = () => {
-    this.setState({
-      openLoginMenu: false,
-    });
-  };
   render() {
-    const {user, logout, setOpenLogin, mobile} = this.props;
-    const labelFlatButton = mobile ? '' : 'Вход';
+    const {user, mobile} = this.props;
+    const labelFlatButtonLogin = mobile ? '' : 'Вход';
     const Login = (
        <FlatButton
-         label={labelFlatButton}
+         label={labelFlatButtonLogin}
          style={{color: 'white'}}
          icon={
            <Avatar
@@ -54,34 +36,12 @@ export default class LoginBox extends Component {
               size={30}
            />
          }
-         onTouchTap={setOpenLogin}
+         onTouchTap={this.handleOpenLogin}
        />
     );
-    const LoginSuccess = (
-      <FlatButton
-        label={'Вова'}
-        style={{color: 'white'}}
-        icon={
-          <Avatar
-            color={cyan500}
-            backgroundColor={'white'}
-            size={30}
-          >
-            {'В'}
-          </Avatar>
-        }
-        onTouchTap={this.handleOpenLoginMenu}
-      />
-    );
-    const content = user ? LoginSuccess : Login;
+    const content = user ? <LoginBoxSuccess logout={this.props.logout} user={user}/> : Login;
     return (
        <div>
-         <LoginMenu
-            open={this.state.openLoginMenu}
-            anchorEl={this.state.anchorEl}
-            closedLoginMenu={this.handleCloseLoginMenu}
-            logout={logout}
-         />
           {content}
        </div>
     );

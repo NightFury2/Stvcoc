@@ -5,6 +5,7 @@ import Divider from 'material-ui/Divider';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 
+import ccLiveIcon from './ccLive';
 import NavigationCloseIcon from 'material-ui/svg-icons/navigation/close';
 import UserIcon from 'material-ui/svg-icons/action/account-circle';
 import SchoolIcon from 'material-ui/svg-icons/social/school';
@@ -19,7 +20,7 @@ import SettingIcon from 'material-ui/svg-icons/action/settings';
 export default class MenuContent extends Component {
   static propTypes = {
     menuClose: PropTypes.func.isRequired,
-    user: React.PropTypes.array,
+    user: React.PropTypes.object,
     openLogin: React.PropTypes.bool.isRequired,
     setOpenLogin: React.PropTypes.func.isRequired,
     logout: React.PropTypes.func.isRequired
@@ -39,6 +40,7 @@ export default class MenuContent extends Component {
            title="Меню"
            iconElementLeft={<IconButton onTouchTap={this.props.menuClose}><NavigationCloseIcon/></IconButton>}
          />
+         <ccLiveIcon/>
          <MenuItem primaryText="Главная" leftIcon={<HomeIcon/>} onTouchTap={this.props.menuClose} />
          <MenuItem primaryText="О Колледже" leftIcon={<EyelIcon/>} onTouchTap={this.props.menuClose} />
          <MenuItem primaryText="Абитуриенту" leftIcon={<SchoolIcon/>} onTouchTap={this.props.menuClose} />
@@ -48,7 +50,7 @@ export default class MenuContent extends Component {
          <MenuItem primaryText="Дополнительное образование" leftIcon={<PeopleIcon/>} onTouchTap={this.props.menuClose} />
          <Divider/>
          <MenuItem primaryText="Форум" leftIcon={<ForumIcon/>} href="http://iccforum.ru"/>
-         <MenuItem primaryText="Live" leftIcon={<ForumIcon/>} href="http://iccforum.ru"/>
+         <MenuItem primaryText="Live" leftIcon={<ccLiveIcon/>} href="http://iccforum.ru"/>
          <Divider/>
          <MenuItem primaryText="Настройки" leftIcon={<SettingIcon/>} onTouchTap={this.props.menuClose} />
          <MenuItem primaryText="Справка" leftIcon={<HelpIcon/>} onTouchTap={this.props.menuClose} />

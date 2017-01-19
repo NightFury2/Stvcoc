@@ -3,17 +3,17 @@ import { routerReducer } from 'react-router-redux';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
 import { pagination } from 'violet-paginator';
 
-import screenSize from './screenSize';
 import auth from './auth';
-import partners from './partners';
 import news from './news';
+import partners from './partners';
+import screenSize from './screenSize';
 
 export default combineReducers({
   routing: routerReducer,
   reduxAsyncConnect,
   auth,
-  partners,
   news,
+  partners,
   pagination,
-  screenSize,
+  screenSize
 });

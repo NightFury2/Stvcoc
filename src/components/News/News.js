@@ -29,7 +29,7 @@ export default class News extends React.Component {
     desktop: React.PropTypes.bool,
     news: React.PropTypes.array,
     loadingNews: React.PropTypes.bool.isRequired,
-    errorNews: React.PropTypes.object.isRequired
+    loadedNews: React.PropTypes.bool.isRequired
   };
   state = {
     column: 2,
@@ -51,17 +51,15 @@ export default class News extends React.Component {
     this.setState({open: false});
   };
   render() {
-    const {loadingNews, errorNews} = this.props;
-    return (
-       <div style={styles.root}>
-         {!loadingNews && !errorNews &&
-            <GridList
+    const {loadingNews, loadedNews} = this.props;
+    const newsList = (
+       <GridList
                cols={this.state.column}
                cellHeight={300}
                padding={1}
                style={styles.gridList}
             >
-              {this.props.news.map((news) => (
+              {loadedNews && this.props.news.map((news) => (
                 <GridTile
                   key={news.id}
                   title={news.title}
@@ -75,12 +73,16 @@ export default class News extends React.Component {
                 </GridTile>
               ))}
             </GridList>
+    );
+    const failLoadNews = <Subheader>Не удалось подключиться к серверу</Subheader>;
+    const content = loadedNews ? newsList : failLoadNews;
+    return (
+       <div style={styles.root}>
+         {!loadingNews &&
+            content
          }
          {loadingNews &&
-            <CircularProgress size={80} thickness={5} />
-         }
-         {errorNews &&
-            <Subheader>Не удалось подключиться к серверу</Subheader>
+           <CircularProgress size={80} thickness={5} />
          }
         </div>
     );

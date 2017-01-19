@@ -37,12 +37,12 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.partners && globalState.partners.loadedNews;
+  return globalState.partners && globalState.partners.loadedPartners;
 }
 
 export function load() {
   return {
     types: [LOAD_PARTNERS, LOAD_PARTNERS_SUCCESS, LOAD_PARTNERS_FAIL],
-    promise: (client) => client.get('/loadPartners/')
+    promise: (client) => client.get('/api/loadPartners/')
   };
 }

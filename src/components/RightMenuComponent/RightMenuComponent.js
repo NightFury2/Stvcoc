@@ -9,7 +9,7 @@ import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 export default class RightMenuComponent extends Component {
   static propTypes = {
     // auth
-    user: PropTypes.array,
+    user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     setOpenLogin: PropTypes.func.isRequired,
     // screenSize

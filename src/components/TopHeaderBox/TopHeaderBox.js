@@ -11,13 +11,6 @@ export default class TopHeaderBox extends Component {
     // Size
     headerLabelSize: PropTypes.string.isRequired,
     infoButtonSize: PropTypes.string.isRequired,
-    // auth
-    user: PropTypes.array,
-    login: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
-    setOpenLogin: PropTypes.func.isRequired,
-    // screenSize
-    mobile: PropTypes.bool.isRequired
   };
   render() {
     const {headerLabelSize, infoButtonSize} = this.props;

@@ -30,11 +30,11 @@ import {asyncConnect} from 'redux-async-connect';
     // partners
     partners: state.partners.data,
     loadingPartners: state.partners.loadingPartners,
-    errorPartners: state.partners.error,
+    loadedPartners: state.partners.loadedPartners,
     // news
     news: state.news.data,
     loadingNews: state.news.loadingNews,
-    errorNews: state.partners.error,
+    loadedNews: state.news.loadedNews,
     // screenSize
     mobile: state.screenSize.mobile,
     tablet: state.screenSize.tablet,
@@ -45,13 +45,13 @@ export default class Home extends Component {
     // partners
     partners: PropTypes.array,
     loadingPartners: PropTypes.bool.isRequired,
-    errorPartners: PropTypes.object.isRequired,
+    loadedPartners: PropTypes.bool.isRequired,
     // news
     news: PropTypes.array,
     loadingNews: PropTypes.bool.isRequired,
-    errorNews: PropTypes.object.isRequired,
+    loadedNews: PropTypes.bool.isRequired,
     // auth
-    user: PropTypes.array,
+    user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
     openLogin: React.PropTypes.bool.isRequired,
@@ -81,10 +81,10 @@ export default class Home extends Component {
         />
         <div className="col s12 m10 offset-m1">
           <div className="col s12 m8">
-            <News news={this.props.news} errorNews={this.props.errorNews} loadingNews={this.props.loadingNews} mobile={this.props.mobile} tablet={this.props.tablet} desktop={this.props.desktop}/>
+            <News news={this.props.news} loadedNews={this.props.loadedNews} loadingNews={this.props.loadingNews} mobile={this.props.mobile} tablet={this.props.tablet} desktop={this.props.desktop}/>
           </div>
           <div className="col m4 hide-on-small-only">
-            <Partners errorPartners={this.props.errorPartners} loadingPartners={this.props.loadingPartners} partners={this.props.partners}/>
+            <Partners loadedPartners={this.props.loadedPartners} loadingPartners={this.props.loadingPartners} partners={this.props.partners}/>
           </div>
         </div>
       </div>

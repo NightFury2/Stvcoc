@@ -16,7 +16,8 @@ export default class Login extends React.Component {
     open: this.props.openLogin,
     showPassword: false,
     username: '',
-    password: ''
+    password: '',
+    error: false
   };
 
   handleCloseLogin = () => {
@@ -24,10 +25,16 @@ export default class Login extends React.Component {
   };
   handleLogin = (event) => {
     event.preventDefault();
-    console.log(this.state.username);
+    this.handleCloseLogin();
+    this.props.login(this.state.username, this.state.password);
   };
-  handleChangeUsername = () => {
-    this.setState({username: this.value});
+  handleChangeUsername = (event, newValue) => {
+    event.preventDefault();
+    this.setState({username: newValue});
+  };
+  handleChangePassword = (event, newValue) => {
+    event.preventDefault();
+    this.setState({password: newValue});
   };
   handleShowPassword = () => {
     this.setState({showPassword: !this.state.showPassword});
@@ -36,6 +43,7 @@ export default class Login extends React.Component {
     const styles = require('./Login.scss');
     const showPassword = this.state.showPassword ? 'text' : 'password';
     const showPasswordTooltip = this.state.showPassword ? 'Скрыть пароль' : 'Показать пароль';
+    const errorText = this.state.error ? 'Пароль или логин не заполнены' : '';
     const actions = [
       <FlatButton
         label="Закрыть"
@@ -60,6 +68,7 @@ export default class Login extends React.Component {
           <div><br/>
             <TextField
               name={'username'}
+              errorText={errorText}
               floatingLabelStyle={{fontSize: '24px'}}
               floatingLabelFocusStyle={{fontSize: '24px'}}
               floatingLabelText="Введите имя пользователя"
@@ -72,10 +81,12 @@ export default class Login extends React.Component {
             <div>
               <TextField
                 name={'password'}
+                errorText={errorText}
                 floatingLabelStyle={{fontSize: '24px'}}
                 floatingLabelFocusStyle={{fontSize: '24px'}}
                 floatingLabelText="Введите пароль"
                 type={showPassword}
+                onChange={this.handleChangePassword}
                 className={styles.inputs}
                 ref="password"
                 fullWidth
