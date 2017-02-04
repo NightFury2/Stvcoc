@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactPlayer from 'react-player';
 
 import {Card, CardHeader, CardText, CardMedia} from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
@@ -20,7 +19,6 @@ export default class AboutCollage extends Component {
     this.props.setTitle('О Колледже');
   }
   render() {
-    const videoSCC = require('./aboutSCC.webm');
     const kabinet306 = require('./306.jpg');
     const kabinet207 = require('./207.jpg');
     const petrovSmall = require('./petrov_small.jpg');
@@ -31,7 +29,7 @@ export default class AboutCollage extends Component {
          />
          <Divider />
          <CardMedia>
-           <ReactPlayer url={videoSCC} controls/>
+           <iframe height="300px" src="https://www.youtube.com/embed/6xHMgn9PLWg" />
          </CardMedia>
          <CardText>
            В Ставрополе на проспекте Карла Маркса 75 в здании бывшего почтамта в декабре 1954 года постановлением

@@ -6,6 +6,13 @@ import {
     NotFound,
     Accounts,
     NewsView,
+    Reference,
+    Contacts,
+    AdditionalEducation,
+    Entrant,
+    RemoteEducation,
+    ReportAnError,
+    Student,
 // About
     About,
     AboutCollage,
@@ -16,7 +23,8 @@ import {
     WorkPlan,
     RecreationCenter,
     TradeUnion,
-    Administration
+    Administration,
+    Settings,
   } from 'containers/index';
 
 export default () => {
@@ -42,8 +50,6 @@ export default () => {
       { /* Home (main) route */ }
       <IndexRoute component={Home}/>
       { /* Catch all route */ }
-      <Route path="/news/(:slug)" component={NewsView}/>
-      <Route path="/account/(:nikname)" component={Accounts}/>
       <Route component={About}>
         <Route path="/about" component={AboutCollage}/>
         <Route path="/history" component={HistoryCollage}/>
@@ -55,6 +61,16 @@ export default () => {
         <Route path="/recreationCenter" component={RecreationCenter}/>
         <Route path="/workPlan" component={WorkPlan}/>
       </Route>
+      <Route path="/news/(:slug)" component={NewsView}/>
+      <Route path="/account/(:nikname)" component={Accounts}/>
+      <Route path="/entrant" component={Entrant}/>
+      <Route path="/student" component={Student}/>
+      <Route path="/remoteEducation" component={RemoteEducation}/>
+      <Route path="/additionalEducation" component={AdditionalEducation}/>
+      <Route path="/settings" component={Settings}/>
+      <Route path="/reference" component={Reference}/>
+      <Route path="/contacts" component={Contacts}/>
+      <Route path="/reportAnError" component={ReportAnError}/>
       <Route path="*" component={NotFound} status={404} />
     </Route>
   );

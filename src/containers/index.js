@@ -4,6 +4,14 @@ export NotFound from './NotFound/NotFound';
 export Accounts from './Account/Accounts';
 export Login from './Login/Login';
 export NewsView from './NewsView/NewsView';
+export Entrant from './Entrant/Entrant';
+export Student from './Student/Student';
+export RemoteEducation from './RemoteEducation/RemoteEducation';
+export AdditionalEducation from './AdditionalEducation/AdditionalEducation';
+export Reference from './Reference/Reference';
+export Contacts from './Contacts/Contacts';
+export ReportAnError from './ReportAnError/ReportAnError';
+export Settings from './Settings/Settings';
 // About
 export About from './About/About';
 export AboutCollage from './About/AboutCollage/AboutCollage';

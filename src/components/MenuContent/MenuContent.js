@@ -37,18 +37,19 @@ export default class MenuContent extends Component {
          <ccLiveIcon/>
          <MenuItem primaryText="Главная" leftIcon={<HomeIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Главная');}} />
          <MenuItem primaryText="О Колледже" leftIcon={<EyelIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/about'); this.props.setTitle('О колледже');}} />
-         <MenuItem primaryText="Абитуриенту" leftIcon={<SchoolIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Абитуриенту');}} />
-         <MenuItem primaryText="Студенту" leftIcon={<SchoolIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Студенту');}} />
+         <MenuItem primaryText="Абитуриенту" leftIcon={<SchoolIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/entrant'); this.props.setTitle('Абитуриенту');}} />
+         <MenuItem primaryText="Студенту" leftIcon={<SchoolIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/student'); this.props.setTitle('Студенту');}} />
          <Divider/>
-         <MenuItem primaryText="Дистанционное обучение" leftIcon={<PeopleIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Дистанционное обучение');}} />
-         <MenuItem primaryText="Дополнительное образование" leftIcon={<PeopleIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Дополнительное образование');}} />
+         <MenuItem primaryText="Дистанционное обучение" leftIcon={<PeopleIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/remoteEducation'); this.props.setTitle('Дистанционное обучение');}} />
+         <MenuItem primaryText="Дополнительное образование" leftIcon={<PeopleIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/additionalEducation'); this.props.setTitle('Дополнительное образование');}} />
          <Divider/>
          <MenuItem primaryText="Форум" leftIcon={<ForumIcon/>} href="http://iccforum.ru"/>
          <MenuItem primaryText="Live" leftIcon={<ccLiveIcon/>} href="http://iccforum.ru"/>
          <Divider/>
-         <MenuItem primaryText="Настройки" leftIcon={<SettingIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/');}} />
-         <MenuItem primaryText="Справка" leftIcon={<HelpIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/');}} />
-         <MenuItem primaryText="Сообщить об ошибке" leftIcon={<ReportProblemIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/');}} />
+         <MenuItem primaryText="Настройки" leftIcon={<SettingIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/settings'); this.props.setTitle('Настройки');}} />
+         <MenuItem primaryText="Справка" leftIcon={<HelpIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/reference'); this.props.setTitle('Справка');}} />
+         <MenuItem primaryText="Контакты" leftIcon={<HelpIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/contacts'); this.props.setTitle('Контакты');}} />
+         <MenuItem primaryText="Сообщить об ошибке" leftIcon={<ReportProblemIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/reportAnError'); this.props.setTitle('Сообшение об ошибке');}} />
          <Divider/>
          {!this.props.user &&
             <MenuItem primaryText="Вход" leftIcon={<UserIcon/>} onTouchTap={() => {this.props.setOpenLogin(); this.props.menuClose();}} />
