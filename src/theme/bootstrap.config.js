@@ -56,7 +56,7 @@ module.exports = {
     thumbnails: false,
     alerts: false,
     'progress-bars': false,
-    media: false,
+    media: true,
     'list-group': false,
     panels: false,
     wells: false,

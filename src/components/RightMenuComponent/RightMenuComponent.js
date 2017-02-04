@@ -13,7 +13,9 @@ export default class RightMenuComponent extends Component {
     logout: PropTypes.func.isRequired,
     setOpenLogin: PropTypes.func.isRequired,
     // screenSize
-    mobile: PropTypes.bool.isRequired
+    mobile: PropTypes.bool.isRequired,
+    // redux
+    pushState: PropTypes.func.isRequired
   };
   render() {
     const {user, mobile, setOpenLogin, logout} = this.props;
@@ -23,6 +25,7 @@ export default class RightMenuComponent extends Component {
            <Search/>
            {user && <Notification/>}
            <LoginBox
+              pushState={this.props.pushState}
               logout={logout}
               mobile={mobile}
               setOpenLogin={setOpenLogin}

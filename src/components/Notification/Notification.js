@@ -43,6 +43,7 @@ export default class Notification extends Component {
          >
            {notification}
          </IconButton>
+
        </div>
     );
   }

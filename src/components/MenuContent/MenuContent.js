@@ -19,19 +19,13 @@ import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 export default class MenuContent extends Component {
   static propTypes = {
+    pushState: PropTypes.func,
     menuClose: PropTypes.func.isRequired,
     user: React.PropTypes.object,
     openLogin: React.PropTypes.bool.isRequired,
     setOpenLogin: React.PropTypes.func.isRequired,
-    logout: React.PropTypes.func.isRequired
-  };
-  handleLogin = () => {
-    this.props.setOpenLogin();
-    this.props.menuClose();
-  };
-  handleLogout = () => {
-    this.props.logout();
-    this.props.menuClose();
+    logout: React.PropTypes.func.isRequired,
+    setTitle: React.PropTypes.func.isRequired
   };
   render() {
     return (
@@ -41,26 +35,26 @@ export default class MenuContent extends Component {
            iconElementLeft={<IconButton onTouchTap={this.props.menuClose}><NavigationCloseIcon/></IconButton>}
          />
          <ccLiveIcon/>
-         <MenuItem primaryText="Главная" leftIcon={<HomeIcon/>} onTouchTap={this.props.menuClose} />
-         <MenuItem primaryText="О Колледже" leftIcon={<EyelIcon/>} onTouchTap={this.props.menuClose} />
-         <MenuItem primaryText="Абитуриенту" leftIcon={<SchoolIcon/>} onTouchTap={this.props.menuClose} />
-         <MenuItem primaryText="Студенту" leftIcon={<SchoolIcon/>} onTouchTap={this.props.menuClose} />
+         <MenuItem primaryText="Главная" leftIcon={<HomeIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Главная');}} />
+         <MenuItem primaryText="О Колледже" leftIcon={<EyelIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/about'); this.props.setTitle('О колледже');}} />
+         <MenuItem primaryText="Абитуриенту" leftIcon={<SchoolIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Абитуриенту');}} />
+         <MenuItem primaryText="Студенту" leftIcon={<SchoolIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Студенту');}} />
          <Divider/>
-         <MenuItem primaryText="Дистанционное обучение" leftIcon={<PeopleIcon/>} onTouchTap={this.props.menuClose} />
-         <MenuItem primaryText="Дополнительное образование" leftIcon={<PeopleIcon/>} onTouchTap={this.props.menuClose} />
+         <MenuItem primaryText="Дистанционное обучение" leftIcon={<PeopleIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Дистанционное обучение');}} />
+         <MenuItem primaryText="Дополнительное образование" leftIcon={<PeopleIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/'); this.props.setTitle('Дополнительное образование');}} />
          <Divider/>
          <MenuItem primaryText="Форум" leftIcon={<ForumIcon/>} href="http://iccforum.ru"/>
          <MenuItem primaryText="Live" leftIcon={<ccLiveIcon/>} href="http://iccforum.ru"/>
          <Divider/>
-         <MenuItem primaryText="Настройки" leftIcon={<SettingIcon/>} onTouchTap={this.props.menuClose} />
-         <MenuItem primaryText="Справка" leftIcon={<HelpIcon/>} onTouchTap={this.props.menuClose} />
-         <MenuItem primaryText="Сообщить об ошибке" leftIcon={<ReportProblemIcon/>} onTouchTap={this.props.menuClose} />
+         <MenuItem primaryText="Настройки" leftIcon={<SettingIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/');}} />
+         <MenuItem primaryText="Справка" leftIcon={<HelpIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/');}} />
+         <MenuItem primaryText="Сообщить об ошибке" leftIcon={<ReportProblemIcon/>} onTouchTap={() => {this.props.menuClose(); this.props.pushState('/');}} />
          <Divider/>
          {!this.props.user &&
-            <MenuItem primaryText="Вход" leftIcon={<UserIcon/>} onTouchTap={this.handleLogin} />
+            <MenuItem primaryText="Вход" leftIcon={<UserIcon/>} onTouchTap={() => {this.props.setOpenLogin(); this.props.menuClose();}} />
          }
          {this.props.user &&
-            <MenuItem primaryText="Выход" leftIcon={<UserIcon/>} onTouchTap={this.handleLogout} />
+            <MenuItem primaryText="Выход" leftIcon={<UserIcon/>} onTouchTap={() => {this.props.logout(); this.props.menuClose();}} />
          }
        </div>
     );

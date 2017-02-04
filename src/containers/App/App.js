@@ -23,6 +23,7 @@ import {
 } from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 
+import {setTitle} from '../../redux/modules/appBar';
 import {sizeUpdate} from '../../redux/modules/screenSize';
 import {isLoaded as isAuthLoaded, load as loadAuth, login, logout, setCloseLogin, setOpenLogin} from '../../redux/modules/auth';
 import {connect} from 'react-redux';
@@ -66,11 +67,14 @@ injectTapEventPlugin();
   state => ({
     user: state.auth.user,
     openLogin: state.auth.openLogin,
+    loadedAuth: state.auth.loadedAuth,
+    loggingIn: state.auth.loggingIn,
     mobile: state.screenSize.mobile,
     tablet: state.screenSize.tablet,
-    desktop: state.screenSize.desktop
+    desktop: state.screenSize.desktop,
+    title: state.appBar.title
   }),
-  {sizeUpdate, login, logout, setCloseLogin, setOpenLogin, pushState: push})
+  {setTitle, sizeUpdate, login, logout, setCloseLogin, setOpenLogin, pushState: push})
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
@@ -81,6 +85,8 @@ export default class App extends Component {
     desktop: PropTypes.bool,
     // auth
     user: PropTypes.object,
+    loggingIn: PropTypes.bool,
+    loadedAuth: PropTypes.bool,
     logout: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
     openLogin: React.PropTypes.bool.isRequired,
@@ -88,18 +94,21 @@ export default class App extends Component {
     setOpenLogin: React.PropTypes.func.isRequired,
     // react-router-redux
     pushState: PropTypes.func.isRequired,
+    // appBar
+    title: PropTypes.string,
+    setTitle: PropTypes.func,
   };
   state = {
-    title: 'Главная',
     openMenu: false
   };
   componentDidMount() {
     window.addEventListener('resize', this.setSize);
+    this.props.setTitle('Главная');
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       // login
-      this.props.pushState('/');
+      this.props.pushState(`/account/${nextProps.user.nikname}`);
       console.log(this.props.user);
     } else if (this.props.user && !nextProps.user) {
       // logout
@@ -122,55 +131,64 @@ export default class App extends Component {
     }
   };
   menuOpen = () => {
-    console.log('open');
     this.setState({openMenu: true});
   };
   menuClose = () => {
-    console.log('close');
     this.setState({openMenu: false});
   };
   render() {
-    const {openMenu, title} = this.state;
+    const {openMenu} = this.state;
     const styles = require('./App.scss');
     return (
        <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
-          <div className={'row ' + styles.app}>
-            <AppBar
-               style={{position: 'fixed'}}
-               title={title}
-               iconElementLeft={<IconButton onTouchTap={this.menuOpen}><NavogationMenu/></IconButton>}
-               iconElementRight={
-                 <RightMenuComponent
-                    user={this.props.user}
-                    setOpenLogin={this.props.setOpenLogin}
-                    logout={this.props.logout}
-                    mobile={this.props.mobile}
-                 />
-               }
-            />
-            <Drawer
-              width={340}
-              docked={false}
-              open={openMenu}
-              onRequestChange={this.menuClose}
-            >
-              <MenuContent
-                 logout={this.props.logout}
-                 title={title}
-                 menuClose={this.menuClose}
-                 openLogin={this.props.openLogin}
-                 setOpenLogin={this.props.setOpenLogin}
-                 user={this.props.user}
+          <div>
+            <div className={'row ' + styles.app}>
+              <AppBar
+                 style={{position: 'fixed'}}
+                 title={this.props.title ? this.props.title : 'Загрузка...'}
+                 iconElementLeft={<IconButton onTouchTap={this.menuOpen}><NavogationMenu/></IconButton>}
+                 iconElementRight={
+                   <RightMenuComponent
+                      pushState={this.props.pushState}
+                      user={this.props.user}
+                      setOpenLogin={this.props.setOpenLogin}
+                      logout={this.props.logout}
+                      mobile={this.props.mobile}
+                   />
+                 }
               />
-            </Drawer>
-            <Login
-               openLogin={this.props.openLogin}
-               setCloseLogin={this.props.setCloseLogin}
-               user={this.props.user}
-               login={this.props.login}
-            />
-            <Helmet {...config.app.head}/>
-            {this.props.children}
+              <Drawer
+                width={340}
+                docked={false}
+                open={openMenu}
+                onRequestChange={this.menuClose}
+              >
+                <MenuContent
+                   setTitle={this.props.setTitle}
+                   pushState={this.props.pushState}
+                   logout={this.props.logout}
+                   menuClose={this.menuClose}
+                   openLogin={this.props.openLogin}
+                   setOpenLogin={this.props.setOpenLogin}
+                   user={this.props.user}
+                />
+              </Drawer>
+              <Login
+                 loadedAuth={this.props.loadedAuth}
+                 loggingIn={this.props.loggingIn}
+                 openLogin={this.props.openLogin}
+                 setCloseLogin={this.props.setCloseLogin}
+                 user={this.props.user}
+                 mobile={this.props.mobile}
+                 tablet={this.props.tablet}
+                 desktop={this.props.desktop}
+                 login={this.props.login}
+              />
+              <Helmet {...config.app.head}/>
+            </div>
+           <div className={'s12 '}>
+              {this.props.children}
+            </div>
           </div>
        </MuiThemeProvider>
     );

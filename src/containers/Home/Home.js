@@ -9,6 +9,7 @@ import {isLoaded as isNewsLoaded, load as loadHews} from '../../redux/modules/ne
 
 import {connect} from 'react-redux';
 import {asyncConnect} from 'redux-async-connect';
+import {push} from 'react-router-redux';
 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}}) => {
@@ -38,8 +39,8 @@ import {asyncConnect} from 'redux-async-connect';
     // screenSize
     mobile: state.screenSize.mobile,
     tablet: state.screenSize.tablet,
-    desktop: state.screenSize.desktop
-  }), {login, logout, setCloseLogin, setOpenLogin})
+    desktop: state.screenSize.desktop,
+  }), {login, logout, setCloseLogin, setOpenLogin, pushState: push})
 export default class Home extends Component {
   static propTypes = {
     // partners
@@ -61,6 +62,8 @@ export default class Home extends Component {
     mobile: PropTypes.bool,
     tablet: PropTypes.bool,
     desktop: PropTypes.bool,
+    // react-router-redux
+    pushState: PropTypes.func.isRequired
   };
   state = {
     headerLabelSize: '32px',
@@ -81,7 +84,7 @@ export default class Home extends Component {
         />
         <div className="col s12 m10 offset-m1">
           <div className="col s12 m8">
-            <News news={this.props.news} loadedNews={this.props.loadedNews} loadingNews={this.props.loadingNews} mobile={this.props.mobile} tablet={this.props.tablet} desktop={this.props.desktop}/>
+            <News pushState={this.props.pushState} news={this.props.news} loadedNews={this.props.loadedNews} loadingNews={this.props.loadingNews} mobile={this.props.mobile} tablet={this.props.tablet} desktop={this.props.desktop}/>
           </div>
           <div className="col m4 hide-on-small-only">
             <Partners loadedPartners={this.props.loadedPartners} loadingPartners={this.props.loadingPartners} partners={this.props.partners}/>

@@ -16,13 +16,15 @@ export default class LoginBox extends Component {
     logout: PropTypes.func.isRequired,
     setOpenLogin: PropTypes.func.isRequired,
     // screenSize
-    mobile: PropTypes.bool.isRequired
+    mobile: PropTypes.bool.isRequired,
+    // redux
+    pushState: PropTypes.func.isRequired
   };
   handleOpenLogin = () => {
     this.props.setOpenLogin();
   };
   render() {
-    const {user, mobile} = this.props;
+    const {mobile} = this.props;
     const labelFlatButtonLogin = mobile ? '' : 'Вход';
     const Login = (
        <FlatButton
@@ -39,7 +41,7 @@ export default class LoginBox extends Component {
          onTouchTap={this.handleOpenLogin}
        />
     );
-    const content = user ? <LoginBoxSuccess logout={this.props.logout} user={user}/> : Login;
+    const content = this.props.user ? <LoginBoxSuccess pushState={this.props.pushState} logout={this.props.logout} user={this.props.user}/> : Login;
     return (
        <div>
           {content}

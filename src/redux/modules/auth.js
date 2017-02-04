@@ -1,6 +1,9 @@
 const LOAD_AUTH = 'LOAD_AUTH';
 const LOAD_AUTH_SUCCESS = 'LOAD_AUTH_SUCCESS';
 const LOAD_AUTH_FAIL = 'LOAD_AUTH_FAIL';
+const LOAD_PROFILE = 'LOAD_PROFILE';
+const LOAD_PROFILE_SUCCESS = 'LOAD_PROFILE_SUCCESS';
+const LOAD_PROFILE_FAIL = 'LOAD_PROFILE_FAIL';
 const LOGIN = 'LOGIN';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAIL = 'LOGIN_FAIL';
@@ -34,6 +37,25 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         loadedAuth: false,
+        error: action.error
+      };
+    case LOAD_PROFILE:
+      return {
+        ...state,
+        loadingAccount: true
+      };
+    case LOAD_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loadingAccount: false,
+        loadedAccount: true,
+        account: action.result
+      };
+    case LOAD_PROFILE_FAIL:
+      return {
+        ...state,
+        loadingAccount: false,
+        loadedAccount: false,
         error: action.error
       };
     case LOGIN:
@@ -97,16 +119,23 @@ export function isLoaded(globalState) {
 export function load() {
   return {
     types: [LOAD_AUTH, LOAD_AUTH_SUCCESS, LOAD_AUTH_FAIL],
-    promise: (client) => client.get('/api/loadAuth/')
+    promise: (client) => client.get('/loadAuth/')
   };
 }
 
-export function login(username, password) {
+export function loadAccount(nikname) {
+  return {
+    types: [LOAD_PROFILE, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAIL],
+    promise: (client) => client.get(`/loadProfile/${nikname}/`)
+  };
+}
+
+export function login(email, password) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/api/login/', {
+    promise: (client) => client.post('/login/', {
       data: {
-        username: username,
+        email: email,
         password: password
       }
     })
@@ -116,7 +145,7 @@ export function login(username, password) {
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.get('/api/logout/')
+    promise: (client) => client.get('/logout/')
   };
 }
 

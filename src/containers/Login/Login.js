@@ -2,12 +2,21 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
 import EyelIcon from 'material-ui/svg-icons/image/remove-red-eye';
+
+import {email as emailUtils} from '../../utils/validation';
 
 export default class Login extends React.Component {
   static propTypes = {
     user: React.PropTypes.object,
+    loggingIn: React.PropTypes.bool,
+    loadedAuth: React.PropTypes.bool,
+    mobile: React.PropTypes.bool.isRequired,
+    tablet: React.PropTypes.bool.isRequired,
+    desktop: React.PropTypes.bool.isRequired,
     openLogin: React.PropTypes.bool,
     setCloseLogin: React.PropTypes.func.isRequired,
     login: React.PropTypes.func.isRequired
@@ -15,22 +24,51 @@ export default class Login extends React.Component {
   state = {
     open: this.props.openLogin,
     showPassword: false,
-    username: '',
+    email: '',
+    floatingLabelStyle: {
+      fontSize: '24px'
+    },
     password: '',
-    error: false
+    error: false,
+    errorMSG: ''
   };
-
+  componentWillReceiveProps() {
+    if (this.props.mobile) {
+      this.setState({floatingLabelStyle: {
+        fontSize: '15px'
+      }});
+    }
+    if (this.props.tablet) {
+      this.setState({floatingLabelStyle: {
+        fontSize: '20px'
+      }});
+    }
+    if (this.props.desktop) {
+      this.setState({floatingLabelStyle: {
+        fontSize: '24px'
+      }});
+    }
+  }
   handleCloseLogin = () => {
     this.props.setCloseLogin();
   };
-  handleLogin = (event) => {
-    event.preventDefault();
-    this.handleCloseLogin();
-    this.props.login(this.state.username, this.state.password);
+  handleLogin = () => {
+    this.props.login(this.state.email, this.state.password);
+    if (this.props.loadedAuth) {
+      this.setState({error: false, errorMSG: ''});
+      this.handleCloseLogin();
+    } else {
+      this.setState({error: true, errorMSG: 'Логин или пароль не верны'});
+    }
   };
   handleChangeUsername = (event, newValue) => {
     event.preventDefault();
-    this.setState({username: newValue});
+    if (emailUtils(newValue) !== 'Invalid email address') {
+      this.setState({email: newValue});
+      this.setState({error: false, errorMSG: ''});
+    } else {
+      this.setState({error: true, errorMSG: 'Не верно введен email адрес'});
+    }
   };
   handleChangePassword = (event, newValue) => {
     event.preventDefault();
@@ -43,17 +81,19 @@ export default class Login extends React.Component {
     const styles = require('./Login.scss');
     const showPassword = this.state.showPassword ? 'text' : 'password';
     const showPasswordTooltip = this.state.showPassword ? 'Скрыть пароль' : 'Показать пароль';
-    const errorText = this.state.error ? 'Пароль или логин не заполнены' : '';
+    const loading = this.props.loggingIn ? (<CircularProgress size={20} />) : '';
     const actions = [
       <FlatButton
         label="Закрыть"
         primary
         onTouchTap={this.handleCloseLogin}
       />,
-      <FlatButton
+      <RaisedButton
         label="Вход"
         primary
+        icon={loading}
         onTouchTap={this.handleLogin}
+        onSubmit={this.handleLogin}
       />
     ];
     return (
@@ -68,29 +108,27 @@ export default class Login extends React.Component {
           <div><br/>
             <TextField
               name={'username'}
-              errorText={errorText}
-              floatingLabelStyle={{fontSize: '24px'}}
-              floatingLabelFocusStyle={{fontSize: '24px'}}
-              floatingLabelText="Введите имя пользователя"
+              errorText={this.state.errorMSG}
+              floatingLabelStyle={this.state.floatingLabelStyle}
+              floatingLabelFocusStyle={this.state.floatingLabelStyle}
+              floatingLabelText="Введите email адрес"
               onChange={this.handleChangeUsername}
               type={'text'}
               className={styles.inputs}
-              ref="username"
               fullWidth
             /><br/><br/>
             <div>
               <TextField
                 name={'password'}
-                errorText={errorText}
-                floatingLabelStyle={{fontSize: '24px'}}
-                floatingLabelFocusStyle={{fontSize: '24px'}}
+                style={{width: '90%'}}
+                errorText={this.state.errorMSG}
+                floatingLabelStyle={this.state.floatingLabelStyle}
+                floatingLabelFocusStyle={this.state.floatingLabelStyle}
                 floatingLabelText="Введите пароль"
                 type={showPassword}
                 onChange={this.handleChangePassword}
                 className={styles.inputs}
-                ref="password"
-                fullWidth
-              /><br/><br/>
+              />
               <IconButton
                  tooltip={showPasswordTooltip}
                  tooltipPosition={'bottom-center'}

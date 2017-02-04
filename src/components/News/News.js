@@ -1,9 +1,10 @@
 import React from 'react';
 
-import {GridList, GridTile} from 'material-ui/GridList';
+import {GridList} from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey100} from 'material-ui/styles/colors';
+import Item from './Item';
 
 const styles = {
   root: {
@@ -20,7 +21,6 @@ const styles = {
     backgroundColor: grey100
   },
 };
-const img1 = require('./1.jpg');
 
 export default class News extends React.Component {
   static propTypes = {
@@ -29,7 +29,8 @@ export default class News extends React.Component {
     desktop: React.PropTypes.bool,
     news: React.PropTypes.array,
     loadingNews: React.PropTypes.bool.isRequired,
-    loadedNews: React.PropTypes.bool.isRequired
+    loadedNews: React.PropTypes.bool.isRequired,
+    pushState: React.PropTypes.func.isRequired
   };
   state = {
     column: 2,
@@ -44,45 +45,28 @@ export default class News extends React.Component {
       this.setState({column: 2});
     }
   }
-  handleOpen = () => {
-    this.setState({open: true});
-  };
-  handleClose = () => {
-    this.setState({open: false});
-  };
   render() {
     const {loadingNews, loadedNews} = this.props;
+    const news = this.props.loadedNews ? this.props.news.map(item => <Item {...item} key={item.id} />) : '';
     const newsList = (
-       <GridList
-               cols={this.state.column}
-               cellHeight={300}
-               padding={1}
-               style={styles.gridList}
-            >
-              {loadedNews && this.props.news.map((news) => (
-                <GridTile
-                  key={news.id}
-                  title={news.title}
-                  onTouchTap={this.handleOpen}
-                  actionPosition="left"
-                  titlePosition="bottom"
-                  subtitle={news.body_min}
-                  titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-                >
-                  <img src={img1} />
-                </GridTile>
-              ))}
-            </GridList>
+      <GridList
+        cols={this.state.column}
+        cellHeight={370}
+        padding={4}
+        style={styles.gridList}
+      >
+        {news}
+      </GridList>
     );
     const failLoadNews = <Subheader>Не удалось подключиться к серверу</Subheader>;
     const content = loadedNews ? newsList : failLoadNews;
     return (
        <div style={styles.root}>
-         {!loadingNews &&
-            content
-         }
          {loadingNews &&
            <CircularProgress size={80} thickness={5} />
+         }
+         {!loadingNews &&
+            content
          }
         </div>
     );

@@ -6,10 +6,15 @@ import Popover from 'material-ui/Popover/Popover';
 
 export default class LoginMenu extends Component {
   static propTypes = {
+    user: PropTypes.object,
     open: PropTypes.bool.isRequired,
     anchorEl: PropTypes.object.isRequired,
     closedLoginMenu: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    pushState: PropTypes.func.isRequired
+  };
+  handleAccount = () => {
+    this.props.pushState(`/account/${this.props.user.nikname}`);
   };
   render() {
     return (
@@ -21,7 +26,7 @@ export default class LoginMenu extends Component {
           onRequestClose={this.props.closedLoginMenu}
       >
         <Menu onItemTouchTap={this.props.closedLoginMenu}>
-          <MenuItem primaryText="Личный кабинет" />
+          <MenuItem primaryText="Личный кабинет" onTouchTap={this.handleAccount}/>
           <Divider/>
           <MenuItem primaryText="Рассписание" />
           <MenuItem primaryText="Настройки" />
